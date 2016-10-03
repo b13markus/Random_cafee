@@ -93,13 +93,12 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
    
-    
     if ([self.arrayWithFeedback count] == 0) {
         self.tableView.scrollEnabled = NO;
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     } else {
         self.tableView.scrollEnabled = YES;
-        self.tableView.separatorStyle =     UITableViewCellSeparatorStyleSingleLine;
+        self.tableView.separatorStyle =  UITableViewCellSeparatorStyleSingleLine;
     }
     
     return [self.arrayWithFeedback count];
@@ -123,7 +122,7 @@
     
     NSDictionary* dictionaryWithUser = [dict objectForKey:@"user"];
     NSString* firtName = [dictionaryWithUser objectForKey:@"firstName"];
-    NSString* lastName = [dictionaryWithUser objectForKey:@"lastName"];
+  //  NSString* lastName = [dictionaryWithUser objectForKey:@"lastName"];
     
     NSDictionary* dictionaryWithPhoto = [dictionaryWithUser objectForKey:@"photo"];
     NSString* prefix = [dictionaryWithPhoto objectForKey:@"prefix"];

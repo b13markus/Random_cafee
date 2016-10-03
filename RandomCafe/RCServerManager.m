@@ -23,15 +23,21 @@
 
 - (void) getPlacesNearMyLocation:(CLLocationCoordinate2D)location
                         WithType:(NSString*)type
+                      WithRadius:(NSString*)radius
                        OnSuccess:(void(^)(NSArray* places)) success
                        OnFailure:(void(^)(NSError* error, NSInteger statusCode)) failure {
+    
+
+    NSInteger myInt = [radius intValue]*1000;
+    NSString *radiusString = [NSString stringWithFormat: @"%ld", (long)myInt];
+    NSLog(@"%@", radiusString);
     
     NSString* clientID = @"UXVD1VCC3OJA1BQVEHL1DCIXSU2Y5B0UDZ2QMKWC45GZHLDI";
     NSString* clientSecret = @"FWU1SCVSA32UPL3OORVFNZGR3CQXWCI0OUKCKDGGKTIO1U4O";
     NSString* v = @"20130815";
     NSString* ll = [NSString stringWithFormat:@"%f,%f", location.latitude , location.longitude];
     
-    NSDictionary* params = [NSDictionary dictionaryWithObjectsAndKeys:clientID, @"client_id", clientSecret, @"client_secret", v, @"v", ll, @"ll", type , @"query", nil];
+    NSDictionary* params = [NSDictionary dictionaryWithObjectsAndKeys:clientID, @"client_id", clientSecret, @"client_secret", v, @"v", ll, @"ll", type , @"query", radiusString, @"radius", nil];
 
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];

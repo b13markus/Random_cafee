@@ -4,5 +4,6 @@ source 'https://github.com/CocoaPods/Specs.git'
 target 'RandomCafe' do
 
 pod 'AFNetworking', '~> 3.0'
+pod 'CDRTranslucentSideBar', '~> 1.0'
 
 end

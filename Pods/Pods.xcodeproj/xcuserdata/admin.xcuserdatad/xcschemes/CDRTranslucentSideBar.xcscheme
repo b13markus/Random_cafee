@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'BCBA29E3531ECB3B64201C3F34F7ADC2'
-               BlueprintName = 'Pods-RandomCafe'
+               BlueprintIdentifier = '039E55386C3ADC1E409F6CC3FB69AAB2'
+               BlueprintName = 'CDRTranslucentSideBar'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'libPods-RandomCafe.a'>
+               BuildableName = 'libCDRTranslucentSideBar.a'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

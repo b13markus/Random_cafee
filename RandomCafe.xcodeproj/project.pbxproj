@@ -23,12 +23,17 @@
 		8420BCFC1D9E898F003D9DB7 /* coffe_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 8420BCF41D9E898F003D9DB7 /* coffe_active.png */; };
 		8420BCFD1D9E898F003D9DB7 /* wait.png in Resources */ = {isa = PBXBuildFile; fileRef = 8420BCF51D9E898F003D9DB7 /* wait.png */; };
 		8420BCFE1D9E898F003D9DB7 /* wait_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 8420BCF61D9E898F003D9DB7 /* wait_active.png */; };
+		8420BD011DA2619F003D9DB7 /* RCSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8420BD001DA2619F003D9DB7 /* RCSettingsViewController.m */; };
+		8420BD091DA26F4F003D9DB7 /* TableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8420BD081DA26F4F003D9DB7 /* TableViewCell.xib */; };
+		8420BD0C1DA27002003D9DB7 /* RCSettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8420BD0B1DA27002003D9DB7 /* RCSettingTableViewCell.m */; };
+		8420BD131DA2882D003D9DB7 /* SettingsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8420BD121DA2882D003D9DB7 /* SettingsTableViewCell.xib */; };
 		8429AEA81D9A64AC0036952F /* RCServerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8429AEA71D9A64AC0036952F /* RCServerManager.m */; };
 		8429AEAE1D9ABB830036952F /* RCDetailInfoPopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8429AEAC1D9ABB830036952F /* RCDetailInfoPopupView.m */; };
 		8429AEB41D9ACAB40036952F /* RCDetailInfoPopupView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8429AEB31D9ACAB40036952F /* RCDetailInfoPopupView.xib */; };
 		8429AEB91D9D07F70036952F /* placeholder.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8429AEB81D9D07F70036952F /* placeholder.jpg */; };
 		8429AEBC1D9D36D40036952F /* RCDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8429AEBB1D9D36D40036952F /* RCDetailViewController.m */; };
 		8429AEBF1D9D39B50036952F /* RCTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8429AEBE1D9D39B50036952F /* RCTableViewCell.m */; };
+		84690EA31DA29870005173BE /* RCConstant.m in Sources */ = {isa = PBXBuildFile; fileRef = 8420BD151DA291DF003D9DB7 /* RCConstant.m */; };
 		E902EE39897A94FE6E8C8C8D /* libPods-RandomCafe.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77C87CAB7BDE2108CF75D8C7 /* libPods-RandomCafe.a */; };
 /* End PBXBuildFile section */
 
@@ -56,6 +61,14 @@
 		8420BCF41D9E898F003D9DB7 /* coffe_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coffe_active.png; sourceTree = "<group>"; };
 		8420BCF51D9E898F003D9DB7 /* wait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wait.png; sourceTree = "<group>"; };
 		8420BCF61D9E898F003D9DB7 /* wait_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wait_active.png; sourceTree = "<group>"; };
+		8420BCFF1DA2619F003D9DB7 /* RCSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSettingsViewController.h; sourceTree = "<group>"; };
+		8420BD001DA2619F003D9DB7 /* RCSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSettingsViewController.m; sourceTree = "<group>"; };
+		8420BD081DA26F4F003D9DB7 /* TableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableViewCell.xib; sourceTree = "<group>"; };
+		8420BD0A1DA27002003D9DB7 /* RCSettingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSettingTableViewCell.h; sourceTree = "<group>"; };
+		8420BD0B1DA27002003D9DB7 /* RCSettingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSettingTableViewCell.m; sourceTree = "<group>"; };
+		8420BD121DA2882D003D9DB7 /* SettingsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsTableViewCell.xib; sourceTree = "<group>"; };
+		8420BD141DA291DF003D9DB7 /* RCConstant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCConstant.h; sourceTree = "<group>"; };
+		8420BD151DA291DF003D9DB7 /* RCConstant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCConstant.m; sourceTree = "<group>"; };
 		8429AEA61D9A64AC0036952F /* RCServerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCServerManager.h; sourceTree = "<group>"; };
 		8429AEA71D9A64AC0036952F /* RCServerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCServerManager.m; sourceTree = "<group>"; };
 		8429AEAB1D9ABB830036952F /* RCDetailInfoPopupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDetailInfoPopupView.h; sourceTree = "<group>"; };
@@ -146,6 +159,17 @@
 			path = icons;
 			sourceTree = SOURCE_ROOT;
 		};
+		8420BD0D1DA27007003D9DB7 /* RCSettingsTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				8420BD081DA26F4F003D9DB7 /* TableViewCell.xib */,
+				8420BD121DA2882D003D9DB7 /* SettingsTableViewCell.xib */,
+				8420BD0A1DA27002003D9DB7 /* RCSettingTableViewCell.h */,
+				8420BD0B1DA27002003D9DB7 /* RCSettingTableViewCell.m */,
+			);
+			name = RCSettingsTableViewCell;
+			sourceTree = "<group>";
+		};
 		8429AEB01D9ABC370036952F /* Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -157,6 +181,10 @@
 				8429AEBB1D9D36D40036952F /* RCDetailViewController.m */,
 				8429AEA61D9A64AC0036952F /* RCServerManager.h */,
 				8429AEA71D9A64AC0036952F /* RCServerManager.m */,
+				8420BCFF1DA2619F003D9DB7 /* RCSettingsViewController.h */,
+				8420BD001DA2619F003D9DB7 /* RCSettingsViewController.m */,
+				8420BD141DA291DF003D9DB7 /* RCConstant.h */,
+				8420BD151DA291DF003D9DB7 /* RCConstant.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -169,6 +197,7 @@
 				841BAE5C1D93CC2500B17F27 /* LaunchScreen.storyboard */,
 				8429AEBD1D9D39B50036952F /* RCTableViewCell.h */,
 				8429AEBE1D9D39B50036952F /* RCTableViewCell.m */,
+				8420BD0D1DA27007003D9DB7 /* RCSettingsTableViewCell */,
 				8429AEB51D9C1D410036952F /* RCDetailView */,
 			);
 			name = View;
@@ -268,12 +297,14 @@
 				8420BCFD1D9E898F003D9DB7 /* wait.png in Resources */,
 				8420BCF81D9E898F003D9DB7 /* beer_active.png in Resources */,
 				8420BCFE1D9E898F003D9DB7 /* wait_active.png in Resources */,
+				8420BD131DA2882D003D9DB7 /* SettingsTableViewCell.xib in Resources */,
 				8420BCFA1D9E898F003D9DB7 /* burger_active.png in Resources */,
 				8420BCF71D9E898F003D9DB7 /* beer.png in Resources */,
 				841BAE5E1D93CC2500B17F27 /* LaunchScreen.storyboard in Resources */,
 				8420BCFB1D9E898F003D9DB7 /* coffe.png in Resources */,
 				8420BCFC1D9E898F003D9DB7 /* coffe_active.png in Resources */,
 				8429AEB91D9D07F70036952F /* placeholder.jpg in Resources */,
+				8420BD091DA26F4F003D9DB7 /* TableViewCell.xib in Resources */,
 				8420BCF91D9E898F003D9DB7 /* burger.png in Resources */,
 				8429AEB41D9ACAB40036952F /* RCDetailInfoPopupView.xib in Resources */,
 				841BAE5B1D93CC2500B17F27 /* Assets.xcassets in Resources */,
@@ -336,10 +367,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84690EA31DA29870005173BE /* RCConstant.m in Sources */,
 				841BAE561D93CC2500B17F27 /* MapViewController.m in Sources */,
 				841BAE531D93CC2500B17F27 /* AppDelegate.m in Sources */,
 				8429AEA81D9A64AC0036952F /* RCServerManager.m in Sources */,
 				841BAE6A1D93D32200B17F27 /* RCPlace.m in Sources */,
+				8420BD011DA2619F003D9DB7 /* RCSettingsViewController.m in Sources */,
+				8420BD0C1DA27002003D9DB7 /* RCSettingTableViewCell.m in Sources */,
 				8429AEBF1D9D39B50036952F /* RCTableViewCell.m in Sources */,
 				8429AEBC1D9D36D40036952F /* RCDetailViewController.m in Sources */,
 				8429AEAE1D9ABB830036952F /* RCDetailInfoPopupView.m in Sources */,

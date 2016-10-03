@@ -10,7 +10,7 @@
         <scene sceneID="bNa-CS-wst">
             <objects>
                 <navigationController id="1xT-Wv-mvt" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="ipT-WB-uJQ">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="ipT-WB-uJQ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -41,7 +41,8 @@
                         <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="K4d-65-TYm">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="K4d-65-TYm">
+                                <frame key="frameInset" width="1000" height="1000"/>
                                 <connections>
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="feE-p0-yQO"/>
                                 </connections>
@@ -230,6 +231,15 @@
                     </view>
                     <navigationItem key="navigationItem" title="Stumbl." id="vEk-YX-a4x">
                         <barButtonItem key="backBarButtonItem" title="back" id="Fqt-5y-B4L"/>
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="Zr4-cN-NId">
+                            <button key="customView" opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" id="yc1-hc-hAz">
+                                <rect key="frame" x="337" y="11" width="22" height="22"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="OnRightSideBarButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0ER-UU-ynT"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="myMapView" destination="K4d-65-TYm" id="M62-uw-Jod"/>
@@ -407,11 +417,30 @@
                         <outlet property="phonePlaceLabel" destination="eqU-mh-JAu" id="EpB-kZ-acr"/>
                         <outlet property="photoPlaceImageView" destination="TWd-BB-JYW" id="08S-R4-foT"/>
                         <outlet property="tableView" destination="6KH-WP-ynx" id="aYT-9P-dtn"/>
+                        <segue destination="Mmv-KR-tcc" kind="show" identifier="settingsSegue" id="XPi-yJ-41m"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jXC-oV-Zdc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="869.60000000000002" y="91.304347826086968"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="Lqu-RR-DZa">
+            <objects>
+                <viewController id="Mmv-KR-tcc" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="LSm-1G-Kxz"/>
+                        <viewControllerLayoutGuide type="bottom" id="aSa-c7-awb"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="SBP-q9-Krv">
+                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tbA-27-ggg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="870" y="-596"/>
         </scene>
     </scenes>
     <resources>

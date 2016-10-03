@@ -14,6 +14,7 @@
 + (RCServerManager*) sharedManager;
 - (void) getPlacesNearMyLocation:(CLLocationCoordinate2D)location
                         WithType:(NSString*)type
+                      WithRadius:(NSString*)radius
                        OnSuccess:(void(^)(NSArray* places)) success
                        OnFailure:(void(^)(NSError* error, NSInteger statusCode)) failure;
 

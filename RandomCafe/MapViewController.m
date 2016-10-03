@@ -12,25 +12,33 @@
 #import "RCServerManager.h"
 #import "RCDetailInfoPopupView.h"
 #import "RCDetailViewController.h"
+#import "CDRTranslucentSideBar.h"
+#import "RCSettingTableViewCell.h"
+#import "RCConstant.h"
 
-@interface MapViewController () <MKMapViewDelegate, CLLocationManagerDelegate> {
+@interface MapViewController () <MKMapViewDelegate, CLLocationManagerDelegate, CDRTranslucentSideBarDelegate, UITextFieldDelegate> {
     
     IBOutletCollection(UIButton) NSArray *placeButtons;
     IBOutlet UIButton *stumblButton;
     
     __weak IBOutlet MKMapView *myMapView;
     CLLocationManager *locatioManager;
-    
 }
 
 @property (assign ,nonatomic) BOOL myLocation;
 @property (assign, nonatomic) NSInteger randomIndexPlace;
+@property (assign, nonatomic) NSInteger indexTapButton;
 @property (strong, nonatomic) MKDirections* directions;
 @property (strong, nonatomic) NSArray* arrayWithPlaces;
 @property (strong, nonatomic) CLGeocoder* geoCoder;
+@property (strong, nonatomic) NSString* distanceRange;
 @property (strong, nonatomic) IBOutlet UIView* viewDetailPlace;//placeholderForPlaceDetailView
+@property (strong, nonatomic) MKMapItem* locationMyAnnotation;
 @property (strong, nonatomic) RCDetailInfoPopupView* detailView;
 @property (strong, nonatomic) RCPlace* randomPlace;
+@property (nonatomic, strong) CDRTranslucentSideBar *rightSideBar;
+
+- (IBAction)OnRightSideBarButtonTapped:(id)sender;
 
 @end
 
@@ -53,10 +61,19 @@
     stumblButton.enabled = NO;
     
     [self stumblRounds];
+    [self initializatSideBar];
+    
+    NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
+    
+    [nc addObserver:self
+           selector:@selector(successfullyRetrievedObjects:)
+               name:RCRadiusDidChangeNotification
+             object:nil];
 }
 
 - (void)dealloc {
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
     if ([self.geoCoder isGeocoding]) {
         [self.geoCoder cancelGeocode];
     }
@@ -99,7 +116,6 @@
         self.viewDetailPlace.hidden = NO;
         [self.viewDetailPlace addSubview:_detailView];
         [self.viewDetailPlace setFrame:self.detailView.frame];
-        
     }
 }
 
@@ -107,9 +123,7 @@
   
     [self.detailView removeFromSuperview];
     self.viewDetailPlace.hidden = YES;
-
 }
-
 
 - (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id <MKOverlay>)overlay {
     
@@ -150,7 +164,6 @@
 # pragma mark - Actions
 
 
-
 - (IBAction) choosePlaceType:(UIButton*)sender {
     
     for (UIButton* button in placeButtons) {
@@ -169,6 +182,7 @@
     NSArray* arrayTypePlace = @[@"cafe", @"fastfood", @"bar", @"restaurant"];
    
     [self getPlaceFromServerWithType:[arrayTypePlace objectAtIndex:sender.tag]];
+    self.indexTapButton = sender.tag;
     stumblButton.enabled = YES;
 }
 
@@ -191,12 +205,17 @@
     [myMapView removeAnnotations:myMapView.annotations];
     [myMapView removeOverlays:[myMapView overlays]];
 
+    if ([self.arrayWithPlaces count] == 0) {
+        [self showAlertWithTitle:@"Please change a distance" andMessage:@"There are not establishments in this distance"];
+    
+    } else {
     MKPointAnnotation* annotation = [self createRandomAnnotation];
     
     [myMapView addAnnotation:annotation];
     
     [self createRoutToAnnotation:annotation];
     [self ShowAllAnnotation];
+    }
     
 }
 
@@ -208,10 +227,14 @@
     myMapView.showsBuildings = YES;
     
     CLLocationCoordinate2D myLocation = CLLocationCoordinate2DMake(myMapView.userLocation.coordinate.latitude, myMapView.userLocation.coordinate.longitude);
-
+    
+    if (self.distanceRange.length == 0) {
+        self.distanceRange = @"4";
+    }
     [[RCServerManager sharedManager]
      getPlacesNearMyLocation:myLocation
      WithType:type
+     WithRadius:self.distanceRange
      OnSuccess:^(NSArray *places) {
          self.arrayWithPlaces = places;
      }
@@ -235,7 +258,14 @@
 
 #pragma mark - Private Methods
 
+- (void) successfullyRetrievedObjects:(NSNotification*) notification {
+    NSString* radius = [notification.userInfo objectForKey:RCRadiusDidChangeInfoKey];
+    self.distanceRange = radius;
+}
+
+
 - (void) stumblRounds {
+    
     [stumblButton.layer setCornerRadius:5.0];
     [stumblButton.layer setMasksToBounds:YES];
     [stumblButton.layer setBorderColor:[UIColor colorWithRed:164.0f/255.0f green:22.0f/255.0f blue:35.0f/255.0f alpha:1.0f].CGColor];
@@ -271,8 +301,17 @@
     
     MKDirectionsRequest* request = [[MKDirectionsRequest alloc] init];
     
+    if (self.locationMyAnnotation == nil) {
+        NSLog(@"test");
+    }
     request.source = [MKMapItem mapItemForCurrentLocation];
-    
+//    CLLocationCoordinate2D locationPlaceLol = CLLocationCoordinate2DMake (49.1, 24.0);
+//    
+//    CLLocationCoordinate2D coordinate2 = locationPlaceLol;
+//    MKPlacemark* placemark2 = [[MKPlacemark alloc] initWithCoordinate:coordinate2 addressDictionary:nil];
+//
+//    request.source = [[MKMapItem alloc] initWithPlacemark:placemark2];//[MKMapItem mapItemForCurrentLocation];
+
     MKPlacemark* placemark = [[MKPlacemark alloc] initWithCoordinate:coordinate addressDictionary:nil];
     
     MKMapItem* destination = [[MKMapItem alloc] initWithPlacemark:placemark];
@@ -366,5 +405,110 @@
       otherButtonTitles:nil] show];
 }
 
+
+#pragma mark - SideBar
+
+- (void) initializatSideBar {
+    
+    // Create Right SideBar
+    self.rightSideBar = [[CDRTranslucentSideBar alloc] initWithDirectionFromRight:YES];
+    self.rightSideBar.delegate = self;
+    
+    // Add PanGesture to Show SideBar by PanGesture
+    UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
+    [self.view addGestureRecognizer:panGestureRecognizer];
+    
+    // Create Content of SideBar
+    UITableView *tableView = [[UITableView alloc] init];
+    UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, tableView.bounds.size.height)];
+    v.backgroundColor = [UIColor clearColor];
+    [tableView setTableHeaderView:v];
+    [tableView setTableFooterView:v];
+    
+    tableView.dataSource = self;
+    tableView.delegate = self;
+
+    [self.rightSideBar setContentViewInSideBar:tableView];
+}
+
+- (IBAction)OnRightSideBarButtonTapped:(id)sender {
+    [self.rightSideBar showInViewController:self];
+}
+
+#pragma mark - Gesture Handler
+
+- (void)handlePanGesture:(UIPanGestureRecognizer *)recognizer {
+    if (recognizer.state == UIGestureRecognizerStateBegan) {
+        
+            self.rightSideBar.isCurrentPanGestureTarget = YES;
+    }
+    
+    [self.rightSideBar handlePanGestureToShow:recognizer inView:self.view];
+   
+}
+
+#pragma mark - CDRTranslucentSideBarDelegate
+
+- (void)sideBar:(CDRTranslucentSideBar *)sideBar didAppear:(BOOL)animated {
+           NSLog(@"Right SideBar did appear");
+}
+
+- (void)sideBar:(CDRTranslucentSideBar *)sideBar willAppear:(BOOL)animated {
+   
+}
+
+- (void)sideBar:(CDRTranslucentSideBar *)sideBar didDisappear:(BOOL)animated {
+
+        NSLog(@"Right SideBar did disappear and == %@", self.distanceRange);
+    NSArray* arrayTypePlace = @[@"cafe", @"fastfood", @"bar", @"restaurant"];
+    NSString* type = [arrayTypePlace objectAtIndex:self.indexTapButton];
+    [self getPlaceFromServerWithType:type];
+}
+
+- (void)sideBar:(CDRTranslucentSideBar *)sideBar willDisappear:(BOOL)animated {
+
+        NSLog(@"Right SideBar will disappear");
+
+}
+
+#pragma mark - UITableViewDataSource
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 1;
+}
+
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 83.5;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+
+    
+    if (indexPath.row == 0) {
+        RCSettingTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"changeRadius"];
+        if (cell == nil) {
+            [tableView registerNib:[UINib nibWithNibName:@"TableViewCell" bundle:nil] forCellReuseIdentifier:@"changeRadius"];
+            
+            cell = [tableView dequeueReusableCellWithIdentifier:@"changeRadius"];
+            
+           self.distanceRange = cell.distanceRange.text;
+            
+        }
+            return cell;
+    }
+//        } else {
+//            RCSettingTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"changeRadius"];
+//            if (cell == nil) {
+//                [tableView registerNib:[UINib nibWithNibName:@"TableViewCell" bundle:nil] forCellReuseIdentifier:@"changeRadius"];
+//                
+//                cell = [tableView dequeueReusableCellWithIdentifier:@"changeRadius"];
+//                return cell;
+//            
+//        }
+//
+    return nil;
+        
+}
 
 @end
