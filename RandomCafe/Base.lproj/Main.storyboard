@@ -41,8 +41,7 @@
                         <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="K4d-65-TYm">
-                                <frame key="frameInset" width="1000" height="1000"/>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="K4d-65-TYm">
                                 <connections>
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="feE-p0-yQO"/>
                                 </connections>
@@ -120,6 +119,9 @@
                                 <size key="titleShadowOffset" width="-1" height="0.0"/>
                                 <state key="normal" title="Stumbl.">
                                     <color key="titleColor" red="0.73887499999999995" green="0.0" blue="0.18529004608359453" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <state key="disabled">
+                                    <color key="titleColor" red="0.67846874999999995" green="0.67846874999999995" blue="0.67846874999999995" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
@@ -203,6 +205,13 @@
                                     <constraint firstItem="aVN-yX-qtO" firstAttribute="centerY" secondItem="x3H-bx-Md4" secondAttribute="centerY" id="mIG-6o-rdO"/>
                                 </constraints>
                             </view>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Tap  anywhere to set your location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cYb-0u-Jxj">
+                                <frame key="frameInset" minX="56.5" minY="495.5" width="262" height="45.5"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.49022836538461539" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -220,6 +229,7 @@
                             <constraint firstItem="zVo-lr-7ox" firstAttribute="width" secondItem="tQm-me-dFv" secondAttribute="width" id="M6a-Wv-FcI"/>
                             <constraint firstItem="RBm-bZ-Xxd" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="15" id="fSl-hX-PHv"/>
                             <constraint firstItem="RBm-bZ-Xxd" firstAttribute="leading" secondItem="tQm-me-dFv" secondAttribute="trailing" id="h9B-kC-xgh"/>
+                            <constraint firstItem="LCk-y8-1bB" firstAttribute="top" secondItem="cYb-0u-Jxj" secondAttribute="bottom" constant="9" id="hbC-en-7Ok"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="K4d-65-TYm" secondAttribute="bottom" id="i8o-xM-DfW"/>
                             <constraint firstItem="zVo-lr-7ox" firstAttribute="leading" secondItem="RBm-bZ-Xxd" secondAttribute="trailing" id="jq7-yl-FsC"/>
                             <constraint firstAttribute="trailing" secondItem="4Pb-T9-ZNP" secondAttribute="trailing" constant="5" id="jrD-Dk-ZFh"/>
@@ -227,14 +237,16 @@
                             <constraint firstItem="tQm-me-dFv" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="15" id="ruZ-23-GTE"/>
                             <constraint firstItem="LCk-y8-1bB" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="v0M-W4-zCd"/>
                             <constraint firstItem="RBm-bZ-Xxd" firstAttribute="width" secondItem="tQm-me-dFv" secondAttribute="width" id="vGO-ND-ZaB"/>
+                            <constraint firstItem="cYb-0u-Jxj" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="yUb-mC-meu"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Stumbl." id="vEk-YX-a4x">
-                        <barButtonItem key="backBarButtonItem" title="back" id="Fqt-5y-B4L"/>
+                        <barButtonItem key="backBarButtonItem" title="Back" id="Fqt-5y-B4L"/>
                         <barButtonItem key="rightBarButtonItem" style="plain" id="Zr4-cN-NId">
-                            <button key="customView" opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" id="yc1-hc-hAz">
-                                <rect key="frame" x="337" y="11" width="22" height="22"/>
+                            <button key="customView" opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="yc1-hc-hAz">
+                                <rect key="frame" x="339" y="12" width="20" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="menu.png"/>
                                 <connections>
                                     <action selector="OnRightSideBarButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0ER-UU-ynT"/>
                                 </connections>
@@ -242,6 +254,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="informationLabel" destination="cYb-0u-Jxj" id="f0o-jW-jwL"/>
                         <outlet property="myMapView" destination="K4d-65-TYm" id="M62-uw-Jod"/>
                         <outlet property="stumblButton" destination="LCk-y8-1bB" id="Buw-yP-Ftw"/>
                         <outlet property="viewDetailPlace" destination="4Pb-T9-ZNP" id="eJ9-tB-kPO"/>
@@ -450,6 +463,7 @@
         <image name="burger_active.png" width="128" height="128"/>
         <image name="coffe.png" width="128" height="128"/>
         <image name="coffe_active.png" width="128" height="128"/>
+        <image name="menu.png" width="128" height="128"/>
         <image name="wait.png" width="128" height="128"/>
         <image name="wait_active.png" width="128" height="128"/>
     </resources>

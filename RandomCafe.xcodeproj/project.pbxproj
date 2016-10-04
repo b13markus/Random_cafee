@@ -34,6 +34,7 @@
 		8429AEBC1D9D36D40036952F /* RCDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8429AEBB1D9D36D40036952F /* RCDetailViewController.m */; };
 		8429AEBF1D9D39B50036952F /* RCTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8429AEBE1D9D39B50036952F /* RCTableViewCell.m */; };
 		84690EA31DA29870005173BE /* RCConstant.m in Sources */ = {isa = PBXBuildFile; fileRef = 8420BD151DA291DF003D9DB7 /* RCConstant.m */; };
+		84690EA51DA3DA72005173BE /* menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 84690EA41DA3DA72005173BE /* menu.png */; };
 		E902EE39897A94FE6E8C8C8D /* libPods-RandomCafe.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77C87CAB7BDE2108CF75D8C7 /* libPods-RandomCafe.a */; };
 /* End PBXBuildFile section */
 
@@ -79,6 +80,7 @@
 		8429AEBB1D9D36D40036952F /* RCDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDetailViewController.m; sourceTree = "<group>"; };
 		8429AEBD1D9D39B50036952F /* RCTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTableViewCell.h; sourceTree = "<group>"; };
 		8429AEBE1D9D39B50036952F /* RCTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTableViewCell.m; sourceTree = "<group>"; };
+		84690EA41DA3DA72005173BE /* menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu.png; sourceTree = "<group>"; };
 		EBDEF20DD8336D9BC0C49D0A /* Pods-RandomCafe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RandomCafe.release.xcconfig"; path = "Pods/Target Support Files/Pods-RandomCafe/Pods-RandomCafe.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -147,6 +149,7 @@
 		8420BCEE1D9E898F003D9DB7 /* icons */ = {
 			isa = PBXGroup;
 			children = (
+				84690EA41DA3DA72005173BE /* menu.png */,
 				8420BCEF1D9E898F003D9DB7 /* beer.png */,
 				8420BCF01D9E898F003D9DB7 /* beer_active.png */,
 				8420BCF11D9E898F003D9DB7 /* burger.png */,
@@ -294,6 +297,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84690EA51DA3DA72005173BE /* menu.png in Resources */,
 				8420BCFD1D9E898F003D9DB7 /* wait.png in Resources */,
 				8420BCF81D9E898F003D9DB7 /* beer_active.png in Resources */,
 				8420BCFE1D9E898F003D9DB7 /* wait_active.png in Resources */,

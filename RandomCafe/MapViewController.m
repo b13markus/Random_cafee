@@ -20,23 +20,30 @@
     
     IBOutletCollection(UIButton) NSArray *placeButtons;
     IBOutlet UIButton *stumblButton;
-    
     __weak IBOutlet MKMapView *myMapView;
+    
     CLLocationManager *locatioManager;
+    UITapGestureRecognizer *tapRecognizer;
 }
 
+@property (strong, nonatomic) IBOutlet UILabel *informationLabel;
+
 @property (assign ,nonatomic) BOOL myLocation;
+@property (assign ,nonatomic) BOOL OnRightSideBBT;
+@property (assign, nonatomic) double myLocationCoordinateLongitude;
+@property (assign, nonatomic) double myLocationCoordinateLatitude;
 @property (assign, nonatomic) NSInteger randomIndexPlace;
 @property (assign, nonatomic) NSInteger indexTapButton;
+@property (strong, nonatomic) NSString* distanceRange;
 @property (strong, nonatomic) MKDirections* directions;
 @property (strong, nonatomic) NSArray* arrayWithPlaces;
 @property (strong, nonatomic) CLGeocoder* geoCoder;
-@property (strong, nonatomic) NSString* distanceRange;
 @property (strong, nonatomic) IBOutlet UIView* viewDetailPlace;//placeholderForPlaceDetailView
-@property (strong, nonatomic) MKMapItem* locationMyAnnotation;
 @property (strong, nonatomic) RCDetailInfoPopupView* detailView;
 @property (strong, nonatomic) RCPlace* randomPlace;
 @property (nonatomic, strong) CDRTranslucentSideBar *rightSideBar;
+@property (strong, nonatomic) MKPointAnnotation* placeAnnotation;
+@property (strong, nonatomic) MKPointAnnotation* myCyrrentCoordinateAnnotation;
 
 - (IBAction)OnRightSideBarButtonTapped:(id)sender;
 
@@ -47,19 +54,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.myCyrrentCoordinateAnnotation = [[MKPointAnnotation alloc] init];
+    self.placeAnnotation = [[MKPointAnnotation alloc] init];
+    
     self.geoCoder = [[CLGeocoder alloc] init];
     
     UITapGestureRecognizer *singleFingerTap =
     [[UITapGestureRecognizer alloc] initWithTarget:self
                                             action:@selector(handleSingleTap:)];
     [self.viewDetailPlace addGestureRecognizer:singleFingerTap];
-
-    for (UIButton* button in placeButtons) {
-        button.enabled = NO;
-    }
-    
-    stumblButton.enabled = NO;
-    
+    [self dissableAllButtons];
     [self stumblRounds];
     [self initializatSideBar];
     
@@ -69,6 +73,7 @@
            selector:@selector(successfullyRetrievedObjects:)
                name:RCRadiusDidChangeNotification
              object:nil];
+
 }
 
 - (void)dealloc {
@@ -106,7 +111,7 @@
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
    
-    if (locatioManager.location.coordinate.latitude == view.annotation.coordinate.latitude) {
+    if (self.myCyrrentCoordinateAnnotation.coordinate.latitude == view.annotation.coordinate.latitude && self.myCyrrentCoordinateAnnotation.coordinate.longitude == view.annotation.coordinate.longitude) {
         NSLog(@"test");
     } else {
         
@@ -175,8 +180,9 @@
     } else {
         sender.selected = YES;
     }
-    
-    [myMapView removeAnnotations:myMapView.annotations];
+   
+    [myMapView removeAnnotation:self.placeAnnotation];
+    //[myMapView removeAnnotations:myMapView.annotations];
     [myMapView removeOverlays:[myMapView overlays]];
 
     NSArray* arrayTypePlace = @[@"cafe", @"fastfood", @"bar", @"restaurant"];
@@ -202,13 +208,15 @@
         [self.directions cancel];
     }
     
-    [myMapView removeAnnotations:myMapView.annotations];
+    [myMapView removeAnnotation:self.placeAnnotation];
+   // [myMapView removeAnnotations:myMapView.annotations];
     [myMapView removeOverlays:[myMapView overlays]];
 
     if ([self.arrayWithPlaces count] == 0) {
         [self showAlertWithTitle:@"Please change a distance" andMessage:@"There are not establishments in this distance"];
     
     } else {
+        
     MKPointAnnotation* annotation = [self createRandomAnnotation];
     
     [myMapView addAnnotation:annotation];
@@ -226,11 +234,21 @@
     myMapView.showsUserLocation = YES;
     myMapView.showsBuildings = YES;
     
-    CLLocationCoordinate2D myLocation = CLLocationCoordinate2DMake(myMapView.userLocation.coordinate.latitude, myMapView.userLocation.coordinate.longitude);
+    if (self.myCyrrentCoordinateAnnotation.coordinate.longitude == 0 && self.myCyrrentCoordinateAnnotation.coordinate.latitude == 0) {
+        
+        CLLocationCoordinate2D myLocationCoordinate = CLLocationCoordinate2DMake (myMapView.userLocation.coordinate.latitude, myMapView.userLocation.coordinate.longitude);
+        
+        NSLog(@"%f", myLocationCoordinate.longitude);
+        
+        self.myCyrrentCoordinateAnnotation.coordinate = myLocationCoordinate;
+    }
+    
+    CLLocationCoordinate2D myLocation = self.myCyrrentCoordinateAnnotation.coordinate;///
     
     if (self.distanceRange.length == 0) {
-        self.distanceRange = @"4";
+        self.distanceRange = @"10";
     }
+    
     [[RCServerManager sharedManager]
      getPlacesNearMyLocation:myLocation
      WithType:type
@@ -252,17 +270,40 @@
         RCDetailViewController *detail = [segue destinationViewController];
 
        [detail setPlace:sender];
-        
     }
 }
 
 #pragma mark - Private Methods
 
+- (IBAction)foundTap:(UITapGestureRecognizer *)recognizer {
+    
+    self.informationLabel.hidden = YES;
+
+    if (self.myCyrrentCoordinateAnnotation.coordinate.latitude == myMapView.userLocation.coordinate.latitude && self.myCyrrentCoordinateAnnotation.coordinate.longitude == myMapView.userLocation.coordinate.longitude) {
+        [myMapView removeOverlays:[myMapView overlays]];
+        [myMapView removeAnnotations:myMapView.annotations];
+        
+        CGPoint point = [recognizer locationInView:myMapView];
+        CLLocationCoordinate2D tapPoint = [myMapView convertPoint:point toCoordinateFromView:self.view];
+        
+        self.myCyrrentCoordinateAnnotation.coordinate = tapPoint;
+        
+        MKPointAnnotation *myNewLocation = [[MKPointAnnotation alloc] init];
+        
+        myNewLocation.coordinate = tapPoint;
+        
+        [myMapView addAnnotation:myNewLocation];
+    } else {
+        NSLog(@"test etst tetst");
+    }
+    
+    [myMapView removeGestureRecognizer:recognizer];
+}
+
 - (void) successfullyRetrievedObjects:(NSNotification*) notification {
     NSString* radius = [notification.userInfo objectForKey:RCRadiusDidChangeInfoKey];
     self.distanceRange = radius;
 }
-
 
 - (void) stumblRounds {
     
@@ -290,29 +331,24 @@
     annotation.coordinate = locationPlace;
     annotation.title      = place.name;
     
+    self.placeAnnotation = annotation;
+    
     return annotation;
 }
 
 - (void) createRoutToAnnotation:(MKPointAnnotation*) annotation {
     
     CLLocationCoordinate2D locationPlace = CLLocationCoordinate2DMake (annotation.coordinate.latitude, annotation.coordinate.longitude);
-    
-    CLLocationCoordinate2D coordinate = locationPlace;
+    CLLocationCoordinate2D coordinateAnnotation = locationPlace;
     
     MKDirectionsRequest* request = [[MKDirectionsRequest alloc] init];
     
-    if (self.locationMyAnnotation == nil) {
-        NSLog(@"test");
-    }
-    request.source = [MKMapItem mapItemForCurrentLocation];
-//    CLLocationCoordinate2D locationPlaceLol = CLLocationCoordinate2DMake (49.1, 24.0);
-//    
-//    CLLocationCoordinate2D coordinate2 = locationPlaceLol;
-//    MKPlacemark* placemark2 = [[MKPlacemark alloc] initWithCoordinate:coordinate2 addressDictionary:nil];
-//
-//    request.source = [[MKMapItem alloc] initWithPlacemark:placemark2];//[MKMapItem mapItemForCurrentLocation];
+    CLLocationCoordinate2D myLocationCoordinate = self.myCyrrentCoordinateAnnotation.coordinate;
+    MKPlacemark* placemark2 = [[MKPlacemark alloc] initWithCoordinate:myLocationCoordinate addressDictionary:nil];
 
-    MKPlacemark* placemark = [[MKPlacemark alloc] initWithCoordinate:coordinate addressDictionary:nil];
+    request.source = [[MKMapItem alloc] initWithPlacemark:placemark2];
+    
+    MKPlacemark* placemark = [[MKPlacemark alloc] initWithCoordinate:coordinateAnnotation addressDictionary:nil];
     
     MKMapItem* destination = [[MKMapItem alloc] initWithPlacemark:placemark];
     
@@ -375,8 +411,29 @@
     
     MKMapRect zoomRect = MKMapRectNull;
     
-    for (id <MKAnnotation> annotation in myMapView.annotations) {
+    NSMutableArray* arrayWithAnnotations = [[NSMutableArray alloc] init];
+    
+    [arrayWithAnnotations addObject:self.myCyrrentCoordinateAnnotation];
+    [arrayWithAnnotations addObject:self.placeAnnotation];
+    
+    if (self.myCyrrentCoordinateAnnotation.coordinate.latitude == myMapView.userLocation.coordinate.latitude && self.myCyrrentCoordinateAnnotation.coordinate.longitude == myMapView.userLocation.coordinate.longitude) {
+        for (id <MKAnnotation> annotation in myMapView.annotations) {
+         
+            CLLocationCoordinate2D location = annotation.coordinate;
+            
+            MKMapPoint center = MKMapPointForCoordinate(location);
+            
+            static double delta = 8000;
+            
+            MKMapRect rect = MKMapRectMake(center.x - delta, center.y - delta, delta * 2, delta * 2);
+            
+            zoomRect = MKMapRectUnion(zoomRect, rect);
+        }
         
+    } else {
+        
+    for (id <MKAnnotation> annotation in arrayWithAnnotations) {
+
         CLLocationCoordinate2D location = annotation.coordinate;
         
         MKMapPoint center = MKMapPointForCoordinate(location);
@@ -387,13 +444,13 @@
         
         zoomRect = MKMapRectUnion(zoomRect, rect);
     }
+}
     
     zoomRect = [myMapView mapRectThatFits:zoomRect];
     
     [myMapView setVisibleMapRect:zoomRect
                      edgePadding:UIEdgeInsetsMake(50, 50, 50, 50)
                         animated:YES];
-    
 }
 
 - (void) showAlertWithTitle:(NSString*) title andMessage:(NSString*) message {
@@ -405,6 +462,12 @@
       otherButtonTitles:nil] show];
 }
 
+- (void) dissableAllButtons {
+    for (UIButton* button in placeButtons)  {
+        button.selected = NO;
+    }
+    stumblButton.enabled = NO;
+}
 
 #pragma mark - SideBar
 
@@ -432,7 +495,15 @@
 }
 
 - (IBAction)OnRightSideBarButtonTapped:(id)sender {
-    [self.rightSideBar showInViewController:self];
+    
+    if (self.OnRightSideBBT == NO) {
+        self.OnRightSideBBT = YES;
+        [self.rightSideBar showInViewController:self];
+    } else if (self.OnRightSideBBT == YES) {
+        self.OnRightSideBBT = NO;
+        [self.rightSideBar dismissAnimated:YES];
+    }
+    
 }
 
 #pragma mark - Gesture Handler
@@ -458,8 +529,10 @@
 }
 
 - (void)sideBar:(CDRTranslucentSideBar *)sideBar didDisappear:(BOOL)animated {
-
-        NSLog(@"Right SideBar did disappear and == %@", self.distanceRange);
+   
+    if (self.distanceRange.length == 0) {
+        self.distanceRange = @"10";
+    }
     NSArray* arrayTypePlace = @[@"cafe", @"fastfood", @"bar", @"restaurant"];
     NSString* type = [arrayTypePlace objectAtIndex:self.indexTapButton];
     [self getPlaceFromServerWithType:type];
@@ -468,22 +541,23 @@
 - (void)sideBar:(CDRTranslucentSideBar *)sideBar willDisappear:(BOOL)animated {
 
         NSLog(@"Right SideBar will disappear");
-
 }
 
-#pragma mark - UITableViewDataSource
+#pragma mark - UITableViewDataSource / UITableViewDelegate
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 1;
+    return 3;
 }
 
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 83.5;
+   
+    if (indexPath.row == 0) {
+         return 83.5;
+    }
+    return 38;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-
     
     if (indexPath.row == 0) {
         RCSettingTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"changeRadius"];
@@ -492,23 +566,77 @@
             
             cell = [tableView dequeueReusableCellWithIdentifier:@"changeRadius"];
             
-           self.distanceRange = cell.distanceRange.text;
+            self.distanceRange = cell.distanceRange.text;
             
         }
-            return cell;
-    }
-//        } else {
-//            RCSettingTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"changeRadius"];
-//            if (cell == nil) {
-//                [tableView registerNib:[UINib nibWithNibName:@"TableViewCell" bundle:nil] forCellReuseIdentifier:@"changeRadius"];
-//                
-//                cell = [tableView dequeueReusableCellWithIdentifier:@"changeRadius"];
-//                return cell;
-//            
-//        }
-//
-    return nil;
+        return cell;
         
+    } else if (indexPath.row == 1) {
+        RCSettingTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ChangeLocation"];
+        if (cell == nil) {
+            [tableView registerNib:[UINib nibWithNibName:@"SettingsTableViewCell" bundle:nil] forCellReuseIdentifier:@"settingsCell"];
+            
+            cell = [tableView dequeueReusableCellWithIdentifier:@"settingsCell"];
+            cell.nameSettings.text = @"Change Location";
+
+        }
+        return cell;
+        
+    } else if (indexPath.row == 2) {
+        
+        RCSettingTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MyLocatin"];
+        if (cell == nil) {
+            [tableView registerNib:[UINib nibWithNibName:@"SettingsTableViewCell" bundle:nil] forCellReuseIdentifier:@"settingsCell"];
+            
+            cell = [tableView dequeueReusableCellWithIdentifier:@"settingsCell"];
+            cell.nameSettings.text = @"My Location";
+            
+        }
+        return cell;
+    }
+    
+    return nil;
+    
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if (indexPath.row == 1) {
+        
+        self.myCyrrentCoordinateAnnotation.coordinate = myMapView.userLocation.coordinate;
+        
+        [myMapView removeAnnotations:myMapView.annotations];
+        [myMapView removeOverlays:[myMapView overlays]];
+        
+        [self dissableAllButtons];
+        
+        tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(foundTap:)];
+        tapRecognizer.numberOfTapsRequired = 1;
+        tapRecognizer.numberOfTouchesRequired = 1;
+        
+        [myMapView addGestureRecognizer:tapRecognizer];
+        
+        self.OnRightSideBBT = NO;
+        [self.rightSideBar dismissAnimated:YES];
+        self.informationLabel.hidden = NO;
+    }
+    
+    if (indexPath.row == 2) {
+        
+        self.informationLabel.hidden = YES;
+        [myMapView removeAnnotations:myMapView.annotations];
+        [myMapView removeOverlays:[myMapView overlays]];
+        [myMapView removeGestureRecognizer:tapRecognizer];
+        
+        [self dissableAllButtons];
+        
+        self.myCyrrentCoordinateAnnotation.coordinate = myMapView.userLocation.coordinate;
+        
+        self.OnRightSideBBT = NO;
+        [self.rightSideBar dismissAnimated:YES];
+        [self cameraPosition];
+
+    }
 }
 
 @end

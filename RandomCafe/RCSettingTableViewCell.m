@@ -13,13 +13,21 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    // Initialization code
+
+    UIToolbar* numberToolbar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, 0, 320, 50)];
+    numberToolbar.items = @[[[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
+                            [[UIBarButtonItem alloc]initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneWithNumberPad)]];
+    [numberToolbar sizeToFit];
+    self.distanceRange.inputAccessoryView = numberToolbar;
+}
+
+
+-(void)doneWithNumberPad{
+    [self.distanceRange resignFirstResponder];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
@@ -47,7 +55,7 @@
     if ([string isEqualToString:@""]) {
         return YES;
     }
-    if ([textLenght length] > 0)
+    if ([textLenght length] > 1)
     {
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Message"
                                                        message:@"Too long"
@@ -60,7 +68,5 @@
     return YES;
     
 }
-
-
 
 @end
