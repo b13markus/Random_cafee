@@ -279,7 +279,6 @@
     
     self.informationLabel.hidden = YES;
 
-    if (self.myCyrrentCoordinateAnnotation.coordinate.latitude == myMapView.userLocation.coordinate.latitude && self.myCyrrentCoordinateAnnotation.coordinate.longitude == myMapView.userLocation.coordinate.longitude) {
         [myMapView removeOverlays:[myMapView overlays]];
         [myMapView removeAnnotations:myMapView.annotations];
         
@@ -293,11 +292,8 @@
         myNewLocation.coordinate = tapPoint;
         
         [myMapView addAnnotation:myNewLocation];
-    } else {
-        NSLog(@"test etst tetst");
-    }
-    
-    [myMapView removeGestureRecognizer:recognizer];
+
+        [myMapView removeGestureRecognizer:recognizer];
 }
 
 - (void) successfullyRetrievedObjects:(NSNotification*) notification {
@@ -603,7 +599,7 @@
     
     if (indexPath.row == 1) {
         
-        self.myCyrrentCoordinateAnnotation.coordinate = myMapView.userLocation.coordinate;
+        //self.myCyrrentCoordinateAnnotation.coordinate = myMapView.userLocation.coordinate;
         
         [myMapView removeAnnotations:myMapView.annotations];
         [myMapView removeOverlays:[myMapView overlays]];
@@ -635,7 +631,7 @@
         self.OnRightSideBBT = NO;
         [self.rightSideBar dismissAnimated:YES];
         [self cameraPosition];
-
+        
     }
 }
 
